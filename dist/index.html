@@ -1,0 +1,544 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>M5StickC &#43; LINE Things &#43; Amazon Connect連携ハンズオン</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="dist"
+                  title="M5StickC &#43; LINE Things &#43; Amazon Connect連携ハンズオン"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="問い合わせフローを作ろう！" duration="0">
+        <h2 is-upgraded>Amazon Connect電話番号取得</h2>
+<p>すでにAmazon Connectの電話番号を取得している前提で開始します。<br>まだ未取得な方はこちらから番号を取得しておいてください。</p>
+<p><a href="https://ac-handson-00.netlify.com" target="_blank">https://ac-handson-00.netlify.com</a></p>
+<h2 is-upgraded>1-1. 問い合わせフローの作成</h2>
+<p>左側メニューのルーティングから「問い合わせフロー」をクリックします。</p>
+<p class="image-container"><img alt="s100" src="img/f7defc0dbcfc0fae.png"></p>
+<p>［問い合わせフローの作成］をクリックします。</p>
+<p class="image-container"><img alt="s101" src="img/a2f8135bdb84e534.png"></p>
+<p>名前を「M5Stick-AmazonConnect」と入力します。</p>
+<p class="image-container"><img alt="s102" src="img/b2deea2f368bad83.png"></p>
+<p>設定カテゴリにある「音声の設定」ブロックをドラッグアンドドロップして、ドロップしたブロックをクリックします。</p>
+<p class="image-container"><img alt="s103" src="img/e2bdb3d3d43529bc.png"></p>
+<p>言語は「日本語」でお好きな音声を選択してください。</p>
+<p class="image-container"><img alt="s104" src="img/bf8c94c0a4182d49.png"></p>
+<p>エントリポイントと音声の設定ブロックを繋げます。</p>
+<p class="image-container"><img alt="s105" src="img/a80d0310427cce38.png"></p>
+<p>設定カテゴリにある「問い合わせ属性の設定」をドラッグアンドドロップします。</p>
+<p class="image-container"><img alt="s106" src="img/ea34fc8d9bc4bffd.png"></p>
+<p>属性の設定を行います。「属性を使用する」を選択してください。</p>
+<table>
+<tr></tr>
+<tr><td colspan="1" rowspan="1"><p>宛先キー</p>
+</td><td colspan="1" rowspan="1"><p>message</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>タイプ</p>
+</td><td colspan="1" rowspan="1"><p>ユーザー定義</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>属性</p>
+</td><td colspan="1" rowspan="1"><p>message</p>
+</td></tr>
+</table>
+<p class="image-container"><img alt="s107" src="img/17fd381f0e39fd68.png"></p>
+<p>ブロックを繋げます。</p>
+<p class="image-container"><img alt="s108" src="img/799fa7db13c65954.png"></p>
+<p>操作カテゴリにある「プロンプトの再生」をドラッグアンドドロップします。</p>
+<p class="image-container"><img alt="s109" src="img/819a80fb6b1faf2d.png"></p>
+<p>属性の設定を行います。「テキスト読み上げ機能(アドホック)」を選択してください。</p>
+<table>
+<tr></tr>
+<tr><td colspan="1" rowspan="1"><p>テキスト読み上げ機能(アドホック)</p>
+</td><td colspan="1" rowspan="1"><p>動的に入力する</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>タイプ</p>
+</td><td colspan="1" rowspan="1"><p>ユーザー定義</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>属性</p>
+</td><td colspan="1" rowspan="1"><p>message</p>
+</td></tr>
+</table>
+<p class="image-container"><img alt="s110" src="img/b41e3be5d26529da.png"></p>
+<p>ブロックを繋げます。</p>
+<p class="image-container"><img alt="s111" src="img/a7511b4ee2d43b19.png"></p>
+<p>ブランチカテゴリにある「ループ」をドラッグアンドドロップします。<br>ループ回数はお好きな数を指定してください。</p>
+<p class="image-container"><img alt="s112" src="img/55ca9d8973d704ca.png"></p>
+<p>ブロックを繋げます。</p>
+<p class="image-container"><img alt="s113" src="img/7f891a46aee7db15.png"></p>
+<p>ループとプロンプトの再生を繋げます。</p>
+<p class="image-container"><img alt="s114" src="img/53a6bb73a8cf09ee.png"></p>
+<p>終了 / 転送カテゴリにある「切断/ハングアップ」をドラッグアンドドロップします。</p>
+<p class="image-container"><img alt="s115" src="img/14d4cefaee1ab9d7.png"></p>
+<p>まだ繋いでいない部分を全て「切断/ハングアップ」に繋ぎます。</p>
+<p class="image-container"><img alt="s116" src="img/2c3ebabd2d911bf7.png"></p>
+<p>右上の［保存］と「公開」ボタンを順番にクリックします。</p>
+<p class="image-container"><img alt="s117" src="img/aba156ef4722d749.png"></p>
+<h2 is-upgraded>1-2. IDをメモしておく</h2>
+<p>問い合わせフローの名前の下に「追加のフロー情報の表示」という項目があるので、それを展開します。展開するとARNの情報が表示されるのでinstanceのIDとconstact-flowのIDをそれぞれメモしておきます。</p>
+<p class="image-container"><img alt="s118" src="img/6d5e0f82e50d9ab6.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lambda関数を作成しよう！" duration="0">
+        <h2 is-upgraded>2-1. Lambda関数を作成する</h2>
+<p>Lambdaから新規で関数を作成します。［関数の作成］ボタンをクリックします。</p>
+<p class="image-container"><img alt="s130" src="img/8c99246ba555faee.png"></p>
+<p>関数は以下の通り入力して、［関数の作成］ボタンをクリックします。</p>
+<table>
+<tr></tr>
+<tr><td colspan="1" rowspan="1"><p>①関数名</p>
+</td><td colspan="1" rowspan="1"><p>M5StickC-AmazonConnect</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>②ランタイム</p>
+</td><td colspan="1" rowspan="1"><p>Node.js 10.x</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>③実行ロール</p>
+</td><td colspan="1" rowspan="1"><p>新しいロールを作成</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>④ロール名</p>
+</td><td colspan="1" rowspan="1"><p>M5StickC-AmazonConnect-Role</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>⑤ポリシーテンプレート</p>
+</td><td colspan="1" rowspan="1"><p>基本的なLambda@Edgeのアクセス権限</p>
+</td></tr>
+</table>
+<p class="image-container"><img alt="s131" src="img/eec5eb5d03868510.png"></p>
+<h2 is-upgraded>2-2. Amazon Connectアクセス権限を追加する</h2>
+<p>M5StickC-AmazonConnect-Roleロールを表示をクリックします。</p>
+<p class="image-container"><img alt="s132" src="img/ddaa9098facef95f.png"></p>
+<p>［インラインポリシーの追加］をクリックします。</p>
+<p class="image-container"><img alt="s133" src="img/edea18ad5f35ebf3.png"></p>
+<p>サービスを展開して、検索窓に「Connect」と入れて検索します。出てきた［Connect］をクリックします。</p>
+<p class="image-container"><img alt="s134" src="img/8b1ccf8fd28152af.png"></p>
+<p>アクションのアクセスレベルにある「書き込み」部分を展開して、その中にある<code>StartOutboundVoiceContact</code>のチェックを入れます。</p>
+<p class="image-container"><img alt="s135" src="img/477078943385911.png"></p>
+<p>すべてのリソースを選択して、右下の［ポリシーの確認］ボタンをクリックします。</p>
+<p class="image-container"><img alt="s136" src="img/9ee73d2d9d7fa867.png"></p>
+<p>ポリシー名を入力します。<code>M5Stick-AmazonConnect-Policy</code>としました。右下の［ポリシーの作成］ボタンをクリックします。</p>
+<p class="image-container"><img alt="s137" src="img/1bc6d7e6953570a5.png"></p>
+<p>Lambda画面に戻り、画面更新するとAmazon Connectの権限が追加されます。</p>
+<p class="image-container"><img alt="s138" src="img/e33e416eb0e8ebea.png"></p>
+<h2 is-upgraded>2-3. プログラムを書き込む</h2>
+<p>index.jsを開き、下記プログラムをコピペしてください。<br>LINE Thingsからリクエストが飛んでくるので、bodyから対象値を取得します。base64で格納されているので、デコード処理が必要です。</p>
+<pre><code>const Util = require(&#39;./util.js&#39;);
+
+exports.handler = async (event) =&gt; {
+    const body = JSON.parse(event.body);
+    const thingsData = body.events[0].things.result;
+
+    const response = {
+        statusCode: 200,
+        body: JSON.stringify(&#39;Hello from M5StickC!&#39;),
+    };
+
+    if (thingsData.bleNotificationPayload) {
+        // LINE Thingsから飛んでくるデータを取得
+        const blePayload = thingsData.bleNotificationPayload;
+        var buffer1 = new Buffer(blePayload, &#39;base64&#39;);
+        var stickData = buffer1.toString(&#39;ascii&#39;);  //Base64をデコード
+        console.log(&#34;M5StickC-Payload=&#34; + stickData);
+        
+        const sendMessage = `エムファイブスティックの値は「${stickData}」です。`;
+
+        // Amazon Connect送信
+        await Util.callMessageAction(sendMessage);
+
+    }  
+    return response;
+};
+</code></pre>
+<p>新規ファイルを作成します。</p>
+<p class="image-container"><img alt="s150" src="img/abf30af0880b11b9.png"></p>
+<p>下記コードをコピペしてください。</p>
+<pre><code>&#39;use strict&#39;;
+const AWS = require(&#39;aws-sdk&#39;);
+var connect = new AWS.Connect();
+
+// 電話をかける処理
+module.exports.callMessageAction = async function callMessageAction(message) {
+    return new Promise(((resolve, reject) =&gt; {
+
+        // Attributesに発話する内容を設定
+        var params = {
+            Attributes: {&#34;message&#34;: message},
+            InstanceId: process.env.INSTANCEID,
+            ContactFlowId: process.env.CONTACTFLOWID,
+            DestinationPhoneNumber: process.env.PHONENUMBER,
+            SourcePhoneNumber: process.env.SOURCEPHONENUMBER
+        };
+
+        // 電話をかける
+        connect.startOutboundVoiceContact(params, function(err, data) {
+            if (err) {
+                console.log(err);
+                reject();
+            } else {
+                resolve(data);
+            }
+        });
+    }));
+};
+</code></pre>
+<p>保存する際はファイル名を「util.js」にしてください。</p>
+<p class="image-container"><img alt="s151" src="img/2678b20879a33de6.png"></p>
+<h2 is-upgraded>2-4. 環境変数を設定する</h2>
+<p>Amazon Connectと連携するための環境変数を設定します。</p>
+<table>
+<tr></tr>
+<tr><td colspan="1" rowspan="1"><p>INSTANCEID</p>
+</td><td colspan="1" rowspan="1"><p>1-2でメモしたinstanceのID</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>CONTACTFLOWID</p>
+</td><td colspan="1" rowspan="1"><p>1-2でメモしたcontact-flowのID</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>PHONENUMBER</p>
+</td><td colspan="1" rowspan="1"><p>ご自身の携帯電話番号 ※+81を先頭につけて数字のみにします<br>例)090-1234-5678 👉+819012345678</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>SOURCEPHONENUMBER</p>
+</td><td colspan="1" rowspan="1"><p>Amazon Connectで取得した電話番号 ※+81を先頭につけて数字のみにします</p>
+</td></tr>
+</table>
+<p class="image-container"><img alt="s152" src="img/498b6f52e6b824da.png"></p>
+<h2 is-upgraded>2-5. API Gatewayを設定する</h2>
+<p>LINE ThingsからアクセスするためのURLを発行します。<br>［トリガーを追加］をクリックします。</p>
+<p class="image-container"><img alt="s153" src="img/7b9a82b5715baaec.png"></p>
+<p>トリガーの設定は下記を指定します。最後に［追加］ボタンをクリックします。</p>
+<table>
+<tr></tr>
+<tr><td colspan="1" rowspan="1"><p>トリガー</p>
+</td><td colspan="1" rowspan="1"><p>API Gateway</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>API</p>
+</td><td colspan="1" rowspan="1"><p>新規APIの作成</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>セキュリティ</p>
+</td><td colspan="1" rowspan="1"><p>オープン</p>
+</td></tr>
+</table>
+<p class="image-container"><img alt="s154" src="img/449b26fa8ec3ff98.png"></p>
+<p>APIエンドポイントのURLをメモしておきましょう</p>
+<p class="image-container"><img alt="s155" src="img/5ed2b9e5f7f61274.png"></p>
+<p>右上の保存ボタンをクリックします。</p>
+<p class="image-container"><img alt="s156" src="img/55dc44ac52705e9f.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="LINE Botを作ろう！" duration="0">
+        <h2 is-upgraded>3-1. チャネルの作成</h2>
+<p>下記にアクセスしてログインしてください。<br><a href="https://developers.line.biz/ja/" target="_blank">https://developers.line.biz/ja/</a></p>
+<p>プロバイダーがまだ無い方は作成お願いします。</p>
+<p>新規チャネルを作成します。</p>
+<p class="image-container"><img alt="s160" src="img/deb92c7bb94383df.png"></p>
+<p>Messaging APIをクリック</p>
+<p class="image-container"><img alt="s161" src="img/5f0e6a9eac54ab8a.png"></p>
+<p>［同意する］をクリック</p>
+<p class="image-container"><img alt="s162" src="img/c13113bf456b1192.png"></p>
+<p>2つのチェックを入れてから［作成］をクリック</p>
+<p class="image-container"><img alt="s163" src="img/6db23266224a8ab.png"></p>
+<table>
+<tr></tr>
+<tr><td colspan="1" rowspan="1"><p>①アプリ名</p>
+</td><td colspan="1" rowspan="1"><p>M5StickC連携ハンズオン</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>②アプリ説明</p>
+</td><td colspan="1" rowspan="1"><p>M5StickC連携ハンズオン</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>③大業種</p>
+</td><td colspan="1" rowspan="1"><p>旅行・エンタメ・レジャー</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>④小業種</p>
+</td><td colspan="1" rowspan="1"><p>その他娯楽・エンタメ</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>⑤メールアドレス</p>
+</td><td colspan="1" rowspan="1"><p>ご自身のメールアドレス</p>
+</td></tr>
+</table>
+<p class="image-container"><img alt="s164" src="img/3e8499d5bfbfec48.png"></p>
+<p>［入力内容を確認する］ボタンをクリック</p>
+<p class="image-container"><img alt="s165" src="img/dca793e2933d83aa.png"></p>
+<p>作成したチャネルをクリックします</p>
+<p class="image-container"><img alt="s166" src="img/ee0a566c7d4de2cb.png"></p>
+<h2 is-upgraded>3-2. アクセストークンを発行する</h2>
+<p>このチャネルにアクセスするためのトークンを発行します。</p>
+<p>［再発行］をクリックします。</p>
+<p class="image-container"><img alt="s167" src="img/40f44ace807afd0c.png"></p>
+<p>[再発行]をクリック</p>
+<p class="image-container"><img alt="s168" src="img/f6c876f9e790532a.png"></p>
+<p>発行されたアクセストークンをメモしておきましょう。</p>
+<p class="image-container"><img alt="s169" src="img/665b435776a43333.png"></p>
+<h2 is-upgraded>3-3. Webhookを設定</h2>
+<p>Webhookのアクセス先URLを指定します。</p>
+<p class="image-container"><img alt="s170" src="img/fe8b59d73786682d.png"></p>
+<p>2-5で作成したAPI GatewayのURLを貼り付けます。「https://」は既にあるので、省略して貼り付けます。［更新］ボタンをクリックします。</p>
+<p class="image-container"><img alt="s171" src="img/e2f1941e7951cdef.png"></p>
+<p>Webhook送信を利用するに変えます</p>
+<p class="image-container"><img alt="s172" src="img/a598f86223c2d391.png"></p>
+<p>利用するを選択して［更新］ボタンをクリックします。<br>稀に利用するに変わらないことがあるので、画面をリロードして確認してください。</p>
+<p class="image-container"><img alt="s173" src="img/c7b001657007d4c1.png"></p>
+<h2 is-upgraded>3-4. LIFFを設定する</h2>
+<p>LIFFアプリを設定します。</p>
+<p class="image-container"><img alt="s174" src="img/e8417e9b0e63d6cf.png"></p>
+<table>
+<tr></tr>
+<tr><td colspan="1" rowspan="1"><p>①名前</p>
+</td><td colspan="1" rowspan="1"><p>M5Stick-AmazonConnect</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>②サイズ</p>
+</td><td colspan="1" rowspan="1"><p>Tall</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>③エンドポイントURL</p>
+</td><td colspan="1" rowspan="1"><p>https://www.google.com/</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>④オプション</p>
+</td><td colspan="1" rowspan="1"><p>必ずONにする</p>
+</td></tr>
+</table>
+<p class="image-container"><img alt="s175" src="img/8b723a28a99e1e05.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="LINE Thingsの設定をしよう！" duration="0">
+        <h2 is-upgraded>4-1. シナリオを作成する</h2>
+<p>のびすけさんが作ったツールをありがたく使います。<br>下記にアクセスしてください。</p>
+<p><a href="https://n0bisuke.github.io/linethingsgen/" target="_blank">https://n0bisuke.github.io/linethingsgen/</a></p>
+<p>左側メニューのSettingをクリックして、3-2で生成したアクセストークンを貼り付けます。<br>［保存］ボタンをクリックします。</p>
+<p class="image-container"><img alt="s177" src="img/70ed93aa75c8de34.png"></p>
+<p>左側メニューのCreate Productをクリックして、プルダウンメニューから3-4で作成したLIFFアプリを指定します。<br>トライアルプロダクトの名前を入力して［保存］ボタンをクリックします。</p>
+<p class="image-container"><img alt="s178" src="img/1a6484985a793827.png"></p>
+<p>左側メニューのCreate Scenarioをクリックして、プルダウンメニューから選択。<br>そのままの状態で［シナリオセットの登録/更新］ボタンをクリックします。</p>
+<p class="image-container"><img alt="s179" src="img/2ecdfa628a99ebb1.png"></p>
+<p>発行されたserviceUuidをメモしておきます。</p>
+<p class="image-container"><img alt="s180" src="img/ebe3b11249e5f9e9.png"></p>
+<h2 is-upgraded>4-2. LINEアプリのLINE Things有効化</h2>
+<p>既に有効化している方はこの手順をスキップしてください。<br>以下のURLを読み込んで、LINE Thingsを有効化してください。</p>
+<p class="image-container"><img alt="s181" src="img/d9de05a792d38df4.png"></p>
+<p>設定ページにLINE Thingsの項目が増えます</p>
+<p class="image-container"><img alt="s182" src="img/77cffa0e01353b54.png"></p>
+<p>20190722ハンズオンをタップします</p>
+<p class="image-container"><img alt="s183" src="img/c200bb400f3ff7f8.png"></p>
+<p>［今すぐ利用］をタップします</p>
+<p class="image-container"><img alt="s184" src="img/df14a38cb29eb534.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="M5Stickにコードを書き込む" duration="0">
+        <h2 is-upgraded>5-1. コードを書き込む</h2>
+<p>Arduino IDEを開いて下記コードを入力します。<br>11行目のサービスUUIDは4-1で生成した値を入力してください。</p>
+<p>コードはこちらからもコピペできます</p>
+<p><a href="https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stick-AmazonConnect/M5Stick-AmazonConnect.ino" target="_blank">https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stick-AmazonConnect/M5Stick-AmazonConnect.ino</a></p>
+<pre><code>#include &lt;BLEDevice.h&gt;
+#include &lt;BLEServer.h&gt;
+#include &lt;BLEUtils.h&gt;
+#include &lt;BLE2902.h&gt;
+#include &lt;M5StickC.h&gt;
+
+// Device Name: Maximum 30 bytes
+#define DEVICE_NAME &#34;M5Stick&#34;
+
+// あなたのサービスUUIDを貼り付けてください
+#define USER_SERVICE_UUID &#34;＜あなたのサービスUUID＞&#34;
+// Notify UUID: トライアル版は値が固定される
+#define NOTIFY_CHARACTERISTIC_UUID &#34;62FBD229-6EDD-4D1A-B554-5C4E1BB29169&#34;
+// PSDI Service UUID: トライアル版は値が固定される
+#define PSDI_SERVICE_UUID &#34;E625601E-9E55-4597-A598-76018A0D293D&#34;
+// PSDI CHARACTERISTIC UUID: トライアル版は値が固定される
+#define PSDI_CHARACTERISTIC_UUID &#34;26E2B12B-85F0-4F3F-9FDD-91D114270E6E&#34;
+
+BLEServer* thingsServer;
+BLESecurity* thingsSecurity;
+BLEService* userService;
+BLEService* psdiService;
+BLECharacteristic* psdiCharacteristic;
+BLECharacteristic* notifyCharacteristic;
+
+bool deviceConnected = false;
+bool oldDeviceConnected = false;
+
+class serverCallbacks: public BLEServerCallbacks {
+  void onConnect(BLEServer* pServer) {
+   deviceConnected = true;
+  };
+
+  void onDisconnect(BLEServer* pServer) {
+    deviceConnected = false;
+  }
+};
+
+void setup() {
+  Serial.begin(115200);
+
+  BLEDevice::init(&#34;&#34;);
+  BLEDevice::setEncryptionLevel(ESP_BLE_SEC_ENCRYPT_NO_MITM);
+
+  // Security Settings
+  BLESecurity *thingsSecurity = new BLESecurity();
+  thingsSecurity-&gt;setAuthenticationMode(ESP_LE_AUTH_BOND);
+  thingsSecurity-&gt;setCapability(ESP_IO_CAP_NONE);
+  thingsSecurity-&gt;setInitEncryptionKey(ESP_BLE_ENC_KEY_MASK | ESP_BLE_ID_KEY_MASK);
+
+  setupServices();
+  startAdvertising();
+
+  // M5Stick LCD Setup
+  M5.begin(true, false, false);
+
+  // 横向き
+  M5.Lcd.setRotation(3);
+
+  // ボタン初期化
+  pinMode(M5_BUTTON_HOME, INPUT);  
+  pinMode(M5_BUTTON_RST, INPUT);
+
+  M5.Lcd.fillScreen(TFT_BLACK);
+  M5.Lcd.setTextColor(YELLOW);
+  M5.Lcd.setCursor(0, 0);   
+  M5.Lcd.print(&#34;Ready to Connect&#34;);
+  Serial.println(&#34;Ready to Connect&#34;);
+}
+
+int btnValue = 0;
+
+void loop() {
+
+  if(digitalRead(M5_BUTTON_RST) == LOW) {
+    // カウントアップ
+    btnValue++;
+    M5.Lcd.fillScreen(TFT_BLACK);
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.setCursor(0, 0);
+    M5.Lcd.print(&#34;Count&#34;);
+    M5.Lcd.setTextColor(GREEN);
+    M5.Lcd.setCursor(30, 40);
+    M5.Lcd.printf(&#34;%d&#34;, btnValue);
+
+    // ボタンが離されるまでループ
+    while(digitalRead(M5_BUTTON_RST) == LOW);
+  }
+
+  if(digitalRead(M5_BUTTON_HOME) == LOW) {
+    // LINE Botに紐づくWebhookにデータ送信
+    const char *newValue=((String)btnValue).c_str();
+    notifyCharacteristic-&gt;setValue(newValue);
+    notifyCharacteristic-&gt;notify();
+
+    M5.Lcd.fillScreen(TFT_BLACK);
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.setCursor(0, 0);
+    M5.Lcd.print(&#34;Send!!&#34;);
+
+    // ボタンが離されるまでループ
+    while(digitalRead(M5_BUTTON_HOME) == LOW);
+
+    // カウント初期化
+    btnValue = 0;
+    delay(3000);
+    M5.Lcd.fillScreen(TFT_BLACK);
+    M5.Lcd.setCursor(0, 0);
+    M5.Lcd.print(&#34;Count&#34;);
+    M5.Lcd.setTextColor(GREEN);
+    M5.Lcd.setCursor(30, 40);
+    M5.Lcd.printf(&#34;%d&#34;, btnValue);    
+  }
+
+  // Disconnection
+  if (!deviceConnected &amp;&amp; oldDeviceConnected) {
+    delay(500); // Wait for BLE Stack to be ready
+    thingsServer-&gt;startAdvertising(); // Restart advertising
+    oldDeviceConnected = deviceConnected;
+    M5.Lcd.fillScreen(TFT_BLACK);
+    M5.Lcd.setTextColor(YELLOW);
+    M5.Lcd.setCursor(0, 0);     
+    M5.Lcd.print(&#34;Ready to Connect&#34;);
+  }
+  // Connection
+  if (deviceConnected &amp;&amp; !oldDeviceConnected) {
+    oldDeviceConnected = deviceConnected;
+    M5.Lcd.fillScreen(TFT_BLACK);
+    M5.Lcd.setTextColor(GREEN);
+    M5.Lcd.setCursor(0, 0);       
+    M5.Lcd.print(&#34;Connected&#34;);
+  }
+}
+
+// サービス初期化
+void setupServices(void) {
+  // Create BLE Server
+  thingsServer = BLEDevice::createServer();
+  thingsServer-&gt;setCallbacks(new serverCallbacks());
+
+  // Setup User Service
+  userService = thingsServer-&gt;createService(USER_SERVICE_UUID);
+
+  // Notifyセットアップ
+  notifyCharacteristic = userService-&gt;createCharacteristic(NOTIFY_CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_NOTIFY);
+  notifyCharacteristic-&gt;setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED | ESP_GATT_PERM_WRITE_ENCRYPTED);
+  BLE2902* ble9202 = new BLE2902();
+  ble9202-&gt;setNotifications(true);
+  ble9202-&gt;setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED | ESP_GATT_PERM_WRITE_ENCRYPTED);
+  notifyCharacteristic-&gt;addDescriptor(ble9202);
+
+  // Setup PSDI Service
+  psdiService = thingsServer-&gt;createService(PSDI_SERVICE_UUID);
+  psdiCharacteristic = psdiService-&gt;createCharacteristic(PSDI_CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_READ);
+  psdiCharacteristic-&gt;setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED | ESP_GATT_PERM_WRITE_ENCRYPTED);
+
+  // Set PSDI (Product Specific Device ID) value
+  uint64_t macAddress = ESP.getEfuseMac();
+  psdiCharacteristic-&gt;setValue((uint8_t*) &amp;macAddress, sizeof(macAddress));
+
+  // Start BLE Services
+  userService-&gt;start();
+  psdiService-&gt;start();
+}
+
+void startAdvertising(void) {
+  // Start Advertising
+  BLEAdvertisementData scanResponseData = BLEAdvertisementData();
+  scanResponseData.setFlags(0x06); // GENERAL_DISC_MODE 0x02 | BR_EDR_NOT_SUPPORTED 0x04
+  scanResponseData.setName(DEVICE_NAME);
+
+  thingsServer-&gt;getAdvertising()-&gt;addServiceUUID(userService-&gt;getUUID());
+  thingsServer-&gt;getAdvertising()-&gt;setScanResponseData(scanResponseData);
+  thingsServer-&gt;getAdvertising()-&gt;start();
+}
+</code></pre>
+<p class="image-container"><img alt="s185" src="img/29689240c8387684.png"></p>
+<p>横のボタンをクリックしてカウントをアップさせて、中央のボタンをクリックするとAmazon Connectから値を教えてくれます。</p>
+<p>7/22のM5StickC + LINE Things + Amazon Connect連携ハンズオンはこれを作ります！押したボタンの値を教えてくれます。<a href="https://t.co/HIdM5EDfGw" target="_blank">https://t.co/HIdM5EDfGw</a><a href="https://twitter.com/hashtag/M5StickC?src=hash&ref_src=twsrc%5Etfw" target="_blank">#M5StickC</a><a href="https://twitter.com/hashtag/AmazonConnect?src=hash&ref_src=twsrc%5Etfw" target="_blank">#AmazonConnect</a><a href="https://t.co/lKGUZPb7m2" target="_blank">pic.twitter.com/lKGUZPb7m2</a></p>
+<p>— がおまる@スマートスピーカーアプリ開発入門発売中！ (@gaomar) <a href="https://twitter.com/gaomar/status/1146329025687670784?ref_src=twsrc%5Etfw" target="_blank">July 3, 2019</a></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>
