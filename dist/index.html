@@ -533,6 +533,198 @@ void startAdvertising(void) {
 
       </google-codelab-step>
     
+      <google-codelab-step label="M5Stackにコードを書き込む" duration="0">
+        <h2 is-upgraded>6-1. コードを書き込む</h2>
+<p>M5Stackをお持ちの方はこちらです。</p>
+<p>Arduino IDEを開いて下記コードを入力します。<br>11行目のサービスUUIDは4-1で生成した値を入力してください。</p>
+<p>コードはこちらからもコピペできます</p>
+<p><a href="https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stack-AmazonConnect/M5Stick-AmazonConnect.ino" target="_blank">https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stack-AmazonConnect/M5Stick-AmazonConnect.ino</a></p>
+<pre><code>#include &lt;BLEDevice.h&gt;
+#include &lt;BLEServer.h&gt;
+#include &lt;BLEUtils.h&gt;
+#include &lt;BLE2902.h&gt;
+#include &lt;M5Stack.h&gt;
+
+// Device Name: Maximum 30 bytes
+#define DEVICE_NAME &#34;M5Stick&#34;
+
+// あなたのサービスUUIDを貼り付けてください
+#define USER_SERVICE_UUID &#34;＜あなたのサービスUUID＞&#34;
+// Notify UUID: トライアル版は値が固定される
+#define NOTIFY_CHARACTERISTIC_UUID &#34;62FBD229-6EDD-4D1A-B554-5C4E1BB29169&#34;
+// PSDI Service UUID: トライアル版は値が固定される
+#define PSDI_SERVICE_UUID &#34;E625601E-9E55-4597-A598-76018A0D293D&#34;
+// PSDI CHARACTERISTIC UUID: トライアル版は値が固定される
+#define PSDI_CHARACTERISTIC_UUID &#34;26E2B12B-85F0-4F3F-9FDD-91D114270E6E&#34;
+
+BLEServer* thingsServer;
+BLESecurity* thingsSecurity;
+BLEService* userService;
+BLEService* psdiService;
+BLECharacteristic* psdiCharacteristic;
+BLECharacteristic* notifyCharacteristic;
+
+bool deviceConnected = false;
+bool oldDeviceConnected = false;
+
+class serverCallbacks: public BLEServerCallbacks {
+  void onConnect(BLEServer* pServer) {
+   deviceConnected = true;
+  };
+
+  void onDisconnect(BLEServer* pServer) {
+    deviceConnected = false;
+  }
+};
+
+void setup() {
+  Serial.begin(115200);
+
+  BLEDevice::init(&#34;&#34;);
+  BLEDevice::setEncryptionLevel(ESP_BLE_SEC_ENCRYPT_NO_MITM);
+
+  // Security Settings
+  BLESecurity *thingsSecurity = new BLESecurity();
+  thingsSecurity-&gt;setAuthenticationMode(ESP_LE_AUTH_BOND);
+  thingsSecurity-&gt;setCapability(ESP_IO_CAP_NONE);
+  thingsSecurity-&gt;setInitEncryptionKey(ESP_BLE_ENC_KEY_MASK | ESP_BLE_ID_KEY_MASK);
+
+  setupServices();
+  startAdvertising();
+
+  // M5Stick LCD Setup
+  M5.begin(true, false, false);
+  M5.Lcd.clear(BLACK);
+  M5.Lcd.setTextColor(YELLOW);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(0, 0);
+  M5.Lcd.println(&#34;Ready to Connect&#34;);
+  Serial.println(&#34;Ready to Connect&#34;);
+
+}
+
+int btnValue = 0;
+
+void loop() {
+
+  M5.update();
+
+  if (M5.BtnA.wasPressed()) {
+    // カウントアップ
+    btnValue++;
+    M5.Lcd.fillScreen(TFT_BLACK);
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.setCursor(0, 0);
+    M5.Lcd.print(&#34;Count&#34;);
+    M5.Lcd.setTextColor(GREEN);
+    M5.Lcd.setCursor(30, 40);
+    M5.Lcd.printf(&#34;%d&#34;, btnValue);
+
+  }
+
+  if (M5.BtnB.wasPressed()) {
+    // LINE Botに紐づくWebhookにデータ送信
+    const char *newValue=((String)btnValue).c_str();
+    notifyCharacteristic-&gt;setValue(newValue);
+    notifyCharacteristic-&gt;notify();
+
+    M5.Lcd.fillScreen(TFT_BLACK);
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.setCursor(0, 0);
+    M5.Lcd.print(&#34;Send!!&#34;);
+
+    // カウント初期化
+    btnValue = 0;
+    delay(3000);
+    M5.Lcd.fillScreen(TFT_BLACK);
+    M5.Lcd.setCursor(0, 0);
+    M5.Lcd.print(&#34;Count&#34;);
+    M5.Lcd.setTextColor(GREEN);
+    M5.Lcd.setCursor(30, 40);
+    M5.Lcd.printf(&#34;%d&#34;, btnValue);    
+  }
+
+  // Disconnection
+  if (!deviceConnected &amp;&amp; oldDeviceConnected) {
+    delay(500); // Wait for BLE Stack to be ready
+    thingsServer-&gt;startAdvertising(); // Restart advertising
+    oldDeviceConnected = deviceConnected;
+    M5.Lcd.fillScreen(TFT_BLACK);
+    M5.Lcd.setTextColor(YELLOW);
+    M5.Lcd.setCursor(0, 0);     
+    M5.Lcd.print(&#34;Ready to Connect&#34;);
+  }
+  // Connection
+  if (deviceConnected &amp;&amp; !oldDeviceConnected) {
+    oldDeviceConnected = deviceConnected;
+    M5.Lcd.fillScreen(TFT_BLACK);
+    M5.Lcd.setTextColor(GREEN);
+    M5.Lcd.setCursor(0, 0);       
+    M5.Lcd.print(&#34;Connected&#34;);
+  }
+}
+
+// サービス初期化
+void setupServices(void) {
+  // Create BLE Server
+  thingsServer = BLEDevice::createServer();
+  thingsServer-&gt;setCallbacks(new serverCallbacks());
+
+  // Setup User Service
+  userService = thingsServer-&gt;createService(USER_SERVICE_UUID);
+
+  // Notifyセットアップ
+  notifyCharacteristic = userService-&gt;createCharacteristic(NOTIFY_CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_NOTIFY);
+  notifyCharacteristic-&gt;setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED | ESP_GATT_PERM_WRITE_ENCRYPTED);
+  BLE2902* ble9202 = new BLE2902();
+  ble9202-&gt;setNotifications(true);
+  ble9202-&gt;setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED | ESP_GATT_PERM_WRITE_ENCRYPTED);
+  notifyCharacteristic-&gt;addDescriptor(ble9202);
+
+  // Setup PSDI Service
+  psdiService = thingsServer-&gt;createService(PSDI_SERVICE_UUID);
+  psdiCharacteristic = psdiService-&gt;createCharacteristic(PSDI_CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_READ);
+  psdiCharacteristic-&gt;setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED | ESP_GATT_PERM_WRITE_ENCRYPTED);
+
+  // Set PSDI (Product Specific Device ID) value
+  uint64_t macAddress = ESP.getEfuseMac();
+  psdiCharacteristic-&gt;setValue((uint8_t*) &amp;macAddress, sizeof(macAddress));
+
+  // Start BLE Services
+  userService-&gt;start();
+  psdiService-&gt;start();
+}
+
+void startAdvertising(void) {
+  // Start Advertising
+  BLEAdvertisementData scanResponseData = BLEAdvertisementData();
+  scanResponseData.setFlags(0x06); // GENERAL_DISC_MODE 0x02 | BR_EDR_NOT_SUPPORTED 0x04
+  scanResponseData.setName(DEVICE_NAME);
+
+  thingsServer-&gt;getAdvertising()-&gt;addServiceUUID(userService-&gt;getUUID());
+  thingsServer-&gt;getAdvertising()-&gt;setScanResponseData(scanResponseData);
+  thingsServer-&gt;getAdvertising()-&gt;start();
+}
+
+</code></pre>
+<p>書き込むボードの設定は以下の通り</p>
+<table>
+<tr></tr>
+<tr><td colspan="1" rowspan="1"><p>ボード</p>
+</td><td colspan="1" rowspan="1"><p>M5Stack-Core-ESP32</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Upload Speed</p>
+</td><td colspan="1" rowspan="1"><p>921600</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>シリアルポート</p>
+</td><td colspan="1" rowspan="1"><p>/dev/cu.SLAB_USBtoUART</p>
+</td></tr>
+</table>
+<p class="image-container"><img alt="s186" src="img/bbc5a851d2f65490.png"></p>
+
+
+      </google-codelab-step>
+    
   </google-codelab>
 
   <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
