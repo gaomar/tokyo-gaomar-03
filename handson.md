@@ -343,7 +343,13 @@ Webhook送信を利用するに変えます
 
 ![s173](images/s173.png)
 
-### 3-4. LIFFを設定する
+### 3-4. LINE Botと友だちになる
+下にスクロールするとQRコードがあるので、LINEアプリからQRを読み取って、
+Botと友だちになっておいてください。
+
+![s173-1](images/s173-1.png)
+
+### 3-5. LIFFを設定する
 LIFFアプリを設定します。
 
 ![s174](images/s174.png)
@@ -360,7 +366,7 @@ LIFFアプリを設定します。
 ## LINE Thingsの設定をしよう！
 ### 4-1. シナリオを作成する
 
-のびすけさんが作ったツールをありがたく使います。
+[のびすけ](https://twitter.com/n0bisuke)さんが作ったツールをありがたく使います。
 下記にアクセスしてください。
 
 [https://n0bisuke.github.io/linethingsgen/](https://n0bisuke.github.io/linethingsgen/)
@@ -370,7 +376,7 @@ LIFFアプリを設定します。
 
 ![s177](images/s177.png)
 
-左側メニューのCreate Productをクリックして、プルダウンメニューから3-4で作成したLIFFアプリを指定します。
+左側メニューのCreate Productをクリックして、プルダウンメニューから3-5で作成したLIFFアプリを指定します。
 トライアルプロダクトの名前を入力して［保存］ボタンをクリックします。
 
 ![s178](images/s178.png)
@@ -605,7 +611,7 @@ Arduino IDEを開いて下記コードを入力します。
 
 コードはこちらからもコピペできます
 
-[https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stack-AmazonConnect/M5Stick-AmazonConnect.ino](https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stack-AmazonConnect/M5Stick-AmazonConnect.ino)
+[https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stack-AmazonConnect/M5Stack-AmazonConnect.ino](https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stack-AmazonConnect/M5Stack-AmazonConnect.ino)
 
 ```c
 #include <BLEDevice.h>
@@ -615,7 +621,7 @@ Arduino IDEを開いて下記コードを入力します。
 #include <M5Stack.h>
 
 // Device Name: Maximum 30 bytes
-#define DEVICE_NAME "M5Stick"
+#define DEVICE_NAME "M5Stack"
 
 // あなたのサービスUUIDを貼り付けてください
 #define USER_SERVICE_UUID "＜あなたのサービスUUID＞"
@@ -661,7 +667,7 @@ void setup() {
   setupServices();
   startAdvertising();
 
-  // M5Stick LCD Setup
+  // M5Stack LCD Setup
   M5.begin(true, false, false);
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextColor(YELLOW);

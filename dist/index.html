@@ -296,7 +296,10 @@ module.exports.callMessageAction = async function callMessageAction(message) {
 <p class="image-container"><img alt="s172" src="img/a598f86223c2d391.png"></p>
 <p>利用するを選択して［更新］ボタンをクリックします。<br>稀に利用するに変わらないことがあるので、画面をリロードして確認してください。</p>
 <p class="image-container"><img alt="s173" src="img/c7b001657007d4c1.png"></p>
-<h2 is-upgraded>3-4. LIFFを設定する</h2>
+<h2 is-upgraded>3-4. LINE Botと友だちになる</h2>
+<p>下にスクロールするとQRコードがあるので、LINEアプリからQRを読み取って、<br>Botと友だちになっておいてください。</p>
+<p class="image-container"><img alt="s173-1" src="img/876fa61d8759a320.png"></p>
+<h2 is-upgraded>3-5. LIFFを設定する</h2>
 <p>LIFFアプリを設定します。</p>
 <p class="image-container"><img alt="s174" src="img/e8417e9b0e63d6cf.png"></p>
 <table>
@@ -321,11 +324,11 @@ module.exports.callMessageAction = async function callMessageAction(message) {
     
       <google-codelab-step label="LINE Thingsの設定をしよう！" duration="0">
         <h2 is-upgraded>4-1. シナリオを作成する</h2>
-<p>のびすけさんが作ったツールをありがたく使います。<br>下記にアクセスしてください。</p>
+<p><a href="https://twitter.com/n0bisuke" target="_blank">のびすけ</a>さんが作ったツールをありがたく使います。<br>下記にアクセスしてください。</p>
 <p><a href="https://n0bisuke.github.io/linethingsgen/" target="_blank">https://n0bisuke.github.io/linethingsgen/</a></p>
 <p>左側メニューのSettingをクリックして、3-2で生成したアクセストークンを貼り付けます。<br>［保存］ボタンをクリックします。</p>
 <p class="image-container"><img alt="s177" src="img/70ed93aa75c8de34.png"></p>
-<p>左側メニューのCreate Productをクリックして、プルダウンメニューから3-4で作成したLIFFアプリを指定します。<br>トライアルプロダクトの名前を入力して［保存］ボタンをクリックします。</p>
+<p>左側メニューのCreate Productをクリックして、プルダウンメニューから3-5で作成したLIFFアプリを指定します。<br>トライアルプロダクトの名前を入力して［保存］ボタンをクリックします。</p>
 <p class="image-container"><img alt="s178" src="img/1a6484985a793827.png"></p>
 <p>左側メニューのCreate Scenarioをクリックして、プルダウンメニューから選択。<br>そのままの状態で［シナリオセットの登録/更新］ボタンをクリックします。</p>
 <p class="image-container"><img alt="s179" src="img/2ecdfa628a99ebb1.png"></p>
@@ -538,7 +541,7 @@ void startAdvertising(void) {
 <p>M5Stackをお持ちの方はこちらです。</p>
 <p>Arduino IDEを開いて下記コードを入力します。<br>11行目のサービスUUIDは4-1で生成した値を入力してください。</p>
 <p>コードはこちらからもコピペできます</p>
-<p><a href="https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stack-AmazonConnect/M5Stick-AmazonConnect.ino" target="_blank">https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stack-AmazonConnect/M5Stick-AmazonConnect.ino</a></p>
+<p><a href="https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stack-AmazonConnect/M5Stack-AmazonConnect.ino" target="_blank">https://github.com/gaomar/tokyo-gaomar-03/raw/master/files/M5Stack-AmazonConnect/M5Stack-AmazonConnect.ino</a></p>
 <pre><code>#include &lt;BLEDevice.h&gt;
 #include &lt;BLEServer.h&gt;
 #include &lt;BLEUtils.h&gt;
@@ -546,7 +549,7 @@ void startAdvertising(void) {
 #include &lt;M5Stack.h&gt;
 
 // Device Name: Maximum 30 bytes
-#define DEVICE_NAME &#34;M5Stick&#34;
+#define DEVICE_NAME &#34;M5Stack&#34;
 
 // あなたのサービスUUIDを貼り付けてください
 #define USER_SERVICE_UUID &#34;＜あなたのサービスUUID＞&#34;
@@ -592,7 +595,7 @@ void setup() {
   setupServices();
   startAdvertising();
 
-  // M5Stick LCD Setup
+  // M5Stack LCD Setup
   M5.begin(true, false, false);
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextColor(YELLOW);

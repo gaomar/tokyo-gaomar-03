@@ -5,7 +5,7 @@
 #include <M5Stack.h>
 
 // Device Name: Maximum 30 bytes
-#define DEVICE_NAME "M5Stick"
+#define DEVICE_NAME "M5Stack"
 
 // あなたのサービスUUIDを貼り付けてください
 #define USER_SERVICE_UUID "＜あなたのサービスUUID＞"
@@ -51,7 +51,7 @@ void setup() {
   setupServices();
   startAdvertising();
 
-  // M5Stick LCD Setup
+  // M5Stack LCD Setup
   M5.begin(true, false, false);
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextColor(YELLOW);
