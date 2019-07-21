@@ -154,7 +154,7 @@ exports.handler = async (event) =&gt; {
     if (thingsData.bleNotificationPayload) {
         // LINE Thingsから飛んでくるデータを取得
         const blePayload = thingsData.bleNotificationPayload;
-        var buffer1 = new Buffer(blePayload, &#39;base64&#39;);
+        var buffer1 = Buffer.from(blePayload, &#39;base64&#39;);
         var stickData = buffer1.toString(&#39;ascii&#39;);  //Base64をデコード
         console.log(&#34;M5StickC-Payload=&#34; + stickData);
         
